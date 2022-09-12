@@ -1,0 +1,38 @@
+.pagination {
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.pagination > ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.pagination li > a {
+  padding: 0.5rem;
+  margin: 1px;
+  display: inline-block;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #d8eef5;
+  border-radius: 8px;
+  min-width: 1rem;
+  transition: all 0.3s;
+}
+
+.pagination li > a:focus {
+  outline: none;
+}
+
+.pagination li > a:hover {
+  background-color: aquamarine;
+  color: blue;
+  transform: translateY(-5px);
+  box-shadow: none;
+  opacity: 0.8;
+}
