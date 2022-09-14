@@ -1,20 +1,5 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  useDisclosure,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
-import React, {
-  FC,
-  memo,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { Box, Flex, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react";
+import React, { FC, memo, useCallback, useEffect, useState } from "react";
 import { useSelectedPokemon } from "../../../hooks/useSelectedPokemon";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { Pagination } from "../../atoms/pagenation/Pagination";
@@ -32,7 +17,6 @@ export const Main: FC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { onSelectPokemon, selectedPokemon } = useSelectedPokemon();
   const [pokemonCount, setPokemonCount] = useState(0);
-  const [allPokemonList, setAllPokemonList] = useState(Array<any>);
   const [searched, setSearched] = useState(false);
 
   const fetchPokemonData = async (URL: string) => {

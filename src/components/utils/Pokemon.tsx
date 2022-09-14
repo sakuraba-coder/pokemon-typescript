@@ -1,5 +1,4 @@
 import { memo, useCallback } from "react";
-import { createRoutesFromChildren } from "react-router-dom";
 
 export const getAllPokemon = (url: string): Promise<any> => {
   // Promise:全て解決するまで待ってね
@@ -12,7 +11,8 @@ export const getAllPokemon = (url: string): Promise<any> => {
       // return が省略されている 元々はreturn resolve
       // return resolveで返すことで、非同期処理をチェーンしている
       // resolveの型はPromiseだから
-      .then((data) => resolve(data));
+      .then((data) => resolve(data))
+      .catch((data) => reject(data));
   });
 };
 

@@ -8,7 +8,6 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { resolve } from "path";
 import React, {
   Dispatch,
   FC,
@@ -16,6 +15,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  useMemo,
 } from "react";
 import { Card } from "../../organisms/Card/Card";
 
@@ -35,10 +35,14 @@ export const SearchForm: FC<Props> = (props: Props) => {
 
   const fetchPokemon = () => {
     const promises = [];
-    for (let i = 1; i < 899; i++) {
+    for (let i = 1; i < 825; i++) {
       const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));
     }
+
+    // console.log("promises", promises);
+
+    // setPokemonData(promises);
 
     Promise.all(promises).then((results) => {
       // const pokemons = results.map((data) => ({
@@ -58,32 +62,33 @@ export const SearchForm: FC<Props> = (props: Props) => {
     fetchPokemon();
   }, []);
 
-  const search = useCallback(
-    (value: string) => {
-      if (value !== "") {
-        const filteredList = pokemonData.filter((pokemon: any) =>
-          Object.values(pokemon).some(
-            (item: any) =>
-              String(item)
-                ?.toUpperCase()
-                .indexOf(value.trim().toUpperCase()) !== -1
-          )
-        );
-        setMemberList(filteredList);
-        setSearched(true);
-        return;
-      }
+  const search = (value: string) => {
+    // console.log("pokemonData", pokemonData);
 
-      setMemberList(pokemonData);
-      setSearched(false);
+    if (value !== "") {
+      const filteredList = pokemonData.filter((pokemon: any) =>
+        Object.values(pokemon).some(
+          (item: any) =>
+            String(item)?.toUpperCase().indexOf(value.trim().toUpperCase()) !==
+            -1
+        )
+      );
+      setMemberList(filteredList);
+      setSearched(true);
       return;
-    },
-    [setSearched, setMemberList]
-  );
+    }
+
+    setMemberList(pokemonData);
+    setSearched(false);
+    return;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+
+    // return new Promise((resolve, reject) => {
     search(e.target.value);
+    // });
   };
 
   return (
@@ -113,6 +118,7 @@ export const SearchForm: FC<Props> = (props: Props) => {
             {memberList.map((pokemon) => {
               return (
                 <WrapItem mx="auto" key={pokemon.id}>
+                  {/* <p>{pokemon.name}</p> */}
                   <Card
                     key={pokemon.id}
                     id={pokemon.id}
