@@ -1,6 +1,14 @@
 import { Box, Flex, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react";
-import React, { FC, memo, useCallback, useEffect, useState } from "react";
+import React, {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+  useContext,
+} from "react";
 import { useSelectedPokemon } from "../../../hooks/useSelectedPokemon";
+import { Store } from "../../../store/store";
 import { PrimaryButton } from "../../atoms/button/PrimaryButton";
 import { Pagination } from "../../atoms/pagenation/Pagination";
 import { SearchForm } from "../../atoms/search/SearchForm";
@@ -19,24 +27,20 @@ export const Main: FC = memo(() => {
   const [pokemonCount, setPokemonCount] = useState(0);
   const [searched, setSearched] = useState(false);
 
+  const { globalState, setGlobalState } = useContext(Store);
+
   const fetchPokemonData = async (URL: string) => {
     setLoading(true);
     //すべてのポケモンデータを取得 ※20匹
     const res: any = await getAllPokemon(URL);
-
     //すべてのポケモンデータの総数を格納
     setPokemonCount(res.count);
-
     //各ポケモンの詳細データを取得
     loadPokemon(res.results);
-
     //次のページの情報を格納
     setNextURL(res.next);
-
     //前のページの情報を格納
     setPrevURL(res.previous);
-
-    // console.log(res);
     setLoading(false);
   };
 
@@ -89,8 +93,6 @@ export const Main: FC = memo(() => {
         onClickCard={onClickCard}
       />
 
-      {/* ページネーション */}
-
       {searched ? (
         <div></div>
       ) : (
@@ -103,6 +105,18 @@ export const Main: FC = memo(() => {
               />
             </Flex>
             <Wrap spacing="30px" justify="center">
+              {/* {globalState.all.map((pokemon: any) => {
+                return (
+                  <WrapItem mx="auto" key={pokemon.name}>
+                    <Card
+                      key={pokemon.name}
+                      id={pokemon.id}
+                      pokemon={pokemon}
+                      onClick={onClickCard}
+                    />
+                  </WrapItem>
+                );
+              })} */}
               {pokemonData.map((pokemon) => {
                 return (
                   <WrapItem mx="auto" key={pokemon.name}>

@@ -16,7 +16,9 @@ import React, {
   useEffect,
   useState,
   useMemo,
+  useContext,
 } from "react";
+import { Store } from "../../../store/store";
 import { Card } from "../../organisms/Card/Card";
 
 type MemberList = Array<any>;
@@ -32,29 +34,16 @@ export const SearchForm: FC<Props> = (props: Props) => {
   const [inputValue, setInputValue] = useState("");
   const [memberList, setMemberList] = useState<MemberList>(Array<any>);
   const [pokemonData, setPokemonData] = useState<MemberList>([]);
+  const { globalState, setGlobalState } = useContext(Store);
 
-  const fetchPokemon = () => {
+  const fetchPokemon = async () => {
     const promises = [];
     for (let i = 1; i < 825; i++) {
       const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));
     }
-
-    // console.log("promises", promises);
-
-    // setPokemonData(promises);
-
-    Promise.all(promises).then((results) => {
-      // const pokemons = results.map((data) => ({
-      //   // name: data.name,
-      //   id: data.id,
-      //   // image: data.sprites["front_default"],
-      //   // type: data.types.map((type: any) => type.type.name).join(", "),
-      //   pokemon: data,
-      // }));
-      // setPokemons(pokemons);
-      setPokemonData(results);
-      console.log("fetchPokemon");
+    await Promise.all(promises).then((results) => {
+      setGlobalState({ type: "SET_All", payload: { all: results } });
     });
   };
 
@@ -63,8 +52,6 @@ export const SearchForm: FC<Props> = (props: Props) => {
   }, []);
 
   const search = (value: string) => {
-    // console.log("pokemonData", pokemonData);
-
     if (value !== "") {
       const filteredList = pokemonData.filter((pokemon: any) =>
         Object.values(pokemon).some(
@@ -77,18 +64,39 @@ export const SearchForm: FC<Props> = (props: Props) => {
       setSearched(true);
       return;
     }
-
     setMemberList(pokemonData);
     setSearched(false);
     return;
   };
 
+  const _search = (value: string) => {
+    if (value !== "") {
+      const filteredList = globalState.all.filter(
+        (pokemon: any) =>
+          // Object.values(pokemon).some(
+          //   (item: any) =>
+          //     String(item)?.toUpperCase().indexOf(value.trim().toUpperCase()) !==
+          //     -1
+          // )
+          String(pokemon.name)
+            ?.toUpperCase()
+            .indexOf(value.trim().toUpperCase()) !== -1
+      );
+      setMemberList(filteredList);
+      setSearched(true);
+      return;
+    }
+    setMemberList(pokemonData);
+    setSearched(false);
+    return;
+  };
+
+  useEffect(() => {
+    _search(inputValue);
+  }, [inputValue]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-
-    // return new Promise((resolve, reject) => {
-    search(e.target.value);
-    // });
   };
 
   return (
