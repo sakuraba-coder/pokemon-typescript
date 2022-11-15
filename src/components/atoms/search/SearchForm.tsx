@@ -83,7 +83,7 @@ export const SearchForm: FC<Props> = (props: Props) => {
             ?.toUpperCase()
             .indexOf(value.trim().toUpperCase()) !== -1
       );
-      console.log("test", filteredList);
+      console.log("test", globalState);
       setMemberList(filteredList);
       setSearchedPokemonData(filteredList);
       setSearched(true);
