@@ -45,8 +45,8 @@ export const SearchForm: FC<Props> = (props: Props) => {
     }
     await Promise.all(promises).then((results) => {
       setGlobalState({ type: "SET_All", payload: { all: results } });
+      console.log("globalState3", globalState);
     });
-    console.log("globalState", globalState);
   };
 
   useEffect(() => {
