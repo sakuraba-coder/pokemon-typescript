@@ -91,6 +91,7 @@ export const Main: FC = memo(() => {
         searched={searched}
         setSearched={setSearched}
         onClickCard={onClickCard}
+        setSearchedPokemonData={setPokemonData}
       />
 
       {searched ? (
@@ -131,12 +132,12 @@ export const Main: FC = memo(() => {
               })}
             </Wrap>
             <Flex justifyContent="center" align="center" mb="16px">
-              <PrimaryButton onClick={handlePrevPage}>前へ</PrimaryButton>
+              {/* <PrimaryButton onClick={handlePrevPage}>前へ</PrimaryButton> */}
               <Pagination
                 pokemonCount={pokemonCount}
                 fetchPokemonData={fetchPokemonData}
               />
-              <PrimaryButton onClick={handleNextPage}>次へ</PrimaryButton>
+              {/* <PrimaryButton onClick={handleNextPage}>次へ</PrimaryButton> */}
             </Flex>
           </Box>
         </>

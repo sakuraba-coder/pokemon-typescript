@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo, useCallback, useState } from "react";
 import ReactPaginate from "react-paginate";
 import styles from "./Pagination.module.css";
 
@@ -12,12 +12,15 @@ export const Pagination: FC<Props> = (props: Props) => {
   const { pokemonCount, fetchPokemonData } = props;
   const ONE_PAGE_DISPLAY_USERS = 20;
 
-  const pageChange = (selectedItem: { selected: number }) => {
-    const page = selectedItem.selected;
-    const offset = page * ONE_PAGE_DISPLAY_USERS;
-    const pageURL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`;
-    fetchPokemonData(pageURL);
-  };
+  const pageChange = useCallback(
+    (selectedItem: { selected: number }) => {
+      const page = selectedItem.selected;
+      const offset = page * ONE_PAGE_DISPLAY_USERS;
+      const pageURL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`;
+      fetchPokemonData(pageURL);
+    },
+    [fetchPokemonData]
+  );
 
   return (
     <div className={styles.pagination}>

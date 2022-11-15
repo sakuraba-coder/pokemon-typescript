@@ -1,5 +1,5 @@
 import { Box, ChakraProvider } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import theme from "./theme/theme";
 
 import "./App.css";

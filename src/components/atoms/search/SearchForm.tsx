@@ -27,10 +27,11 @@ type Props = {
   searched: boolean;
   setSearched: Dispatch<SetStateAction<boolean>>;
   onClickCard: (id: number) => void;
+  setSearchedPokemonData: (pokemonData: any) => void;
 };
 
 export const SearchForm: FC<Props> = (props: Props) => {
-  const { searched, setSearched, onClickCard } = props;
+  const { searched, setSearched, onClickCard, setSearchedPokemonData } = props;
   const [inputValue, setInputValue] = useState("");
   const [memberList, setMemberList] = useState<MemberList>(Array<any>);
   const [pokemonData, setPokemonData] = useState<MemberList>([]);
@@ -83,10 +84,15 @@ export const SearchForm: FC<Props> = (props: Props) => {
             .indexOf(value.trim().toUpperCase()) !== -1
       );
       setMemberList(filteredList);
+      setSearchedPokemonData(filteredList);
       setSearched(true);
       return;
     }
-    setMemberList(pokemonData);
+    const firstPokemons = globalState.all.filter(
+      (pokemon: any) => pokemon.id < 21
+    );
+    setSearchedPokemonData(firstPokemons);
+
     setSearched(false);
     return;
   };
