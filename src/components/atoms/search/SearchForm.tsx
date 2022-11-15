@@ -43,14 +43,15 @@ export const SearchForm: FC<Props> = (props: Props) => {
       const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));
     }
-    console.log("testmantarou", promises);
     await Promise.all(promises).then((results) => {
       setGlobalState({ type: "SET_All", payload: { all: results } });
     });
+    console.log("globalState", globalState);
   };
 
   useEffect(() => {
     fetchPokemon();
+    console.log("globalState2", globalState);
   }, []);
 
   const search = (value: string) => {
