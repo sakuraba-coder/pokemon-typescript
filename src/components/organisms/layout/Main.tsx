@@ -42,6 +42,18 @@ export const Main: FC = memo(() => {
     //前のページの情報を格納
     setPrevURL(res.previous);
     setLoading(false);
+
+    //test
+    const promises = [];
+    for (let i = 1; i < 825; i++) {
+      const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
+      promises.push(fetch(url).then((res) => res.json()));
+    }
+    await Promise.all(promises).then((results) => {
+      setGlobalState({ type: "SET_All", payload: { all: results } });
+    });
+    console.log("ultratestman");
+    //test
   };
 
   useEffect(() => {

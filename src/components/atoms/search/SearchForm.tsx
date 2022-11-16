@@ -37,24 +37,22 @@ export const SearchForm: FC<Props> = (props: Props) => {
   const [pokemonData, setPokemonData] = useState<MemberList>([]);
   const { globalState, setGlobalState } = useContext(Store);
 
-  const fetchPokemon = async () => {
-    const promises = [];
-    for (let i = 1; i < 825; i++) {
-      const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
-      promises.push(fetch(url).then((res) => res.json()));
-    }
-    console.log("globalState4", globalState);
-    await Promise.all(promises).then((results) => {
-      setGlobalState({ type: "SET_All", payload: { all: results } });
-      console.log("globalState3", globalState);
-    });
-    console.log("globalState5", globalState);
-  };
+  // const fetchPokemon = async () => {
+  //   const promises = [];
+  //   for (let i = 1; i < 825; i++) {
+  //     const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
+  //     promises.push(fetch(url).then((res) => res.json()));
+  //   }
+  //   await Promise.all(promises).then((results) => {
+  //     setGlobalState({ type: "SET_All", payload: { all: results } });
+  //   });
 
-  useEffect(() => {
-    fetchPokemon();
-    console.log("globalState2", globalState);
-  }, []);
+  //   // setGlobalState({ type: "SET_All", payload: { all: promises } });
+  // };
+
+  // useEffect(() => {
+  //   fetchPokemon();
+  // }, []);
 
   const search = (value: string) => {
     if (value !== "") {
@@ -76,6 +74,7 @@ export const SearchForm: FC<Props> = (props: Props) => {
 
   const _search = (value: string) => {
     if (value !== "") {
+      console.log("globalState3", globalState);
       const filteredList = globalState.all.filter(
         (pokemon: any) =>
           // Object.values(pokemon).some(
