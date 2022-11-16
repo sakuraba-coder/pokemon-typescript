@@ -52,6 +52,7 @@ export const Main: FC = memo(() => {
     await Promise.all(promises).then((results) => {
       setGlobalState({ type: "SET_All", payload: { all: results } });
     });
+    setGlobalState({ type: "SET_All", payload: { all: promises } });
     console.log("ultratestman");
     //test
   };
