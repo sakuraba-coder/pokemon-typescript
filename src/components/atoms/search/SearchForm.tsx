@@ -39,36 +39,41 @@ export const SearchForm: FC<Props> = (props: Props) => {
 
   const fetchPokemon = async () => {
     const promises = [];
-    for (let i = 1; i < 100; i++) {
-      const url = `https:pokeapi.co/api/v2/pokemon/${i}`;
+    for (let i = 1; i < 825; i++) {
+      const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));
     }
-    await Promise.all(promises).then((results) => {
-      setGlobalState({ type: "SET_All", payload: { all: results } });
-    });
+
+    await Promise.all(promises)
+      .then((results) => {
+        setGlobalState({ type: "SET_All", payload: { all: results } });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
     fetchPokemon();
   }, []);
 
-  const search = (value: string) => {
-    if (value !== "") {
-      const filteredList = pokemonData.filter((pokemon: any) =>
-        Object.values(pokemon).some(
-          (item: any) =>
-            String(item)?.toUpperCase().indexOf(value.trim().toUpperCase()) !==
-            -1
-        )
-      );
-      setMemberList(filteredList);
-      setSearched(true);
-      return;
-    }
-    setMemberList(pokemonData);
-    setSearched(false);
-    return;
-  };
+  // const search = (value: string) => {
+  //   if (value !== "") {
+  //     const filteredList = pokemonData.filter((pokemon: any) =>
+  //       Object.values(pokemon).some(
+  //         (item: any) =>
+  //           String(item)?.toUpperCase().indexOf(value.trim().toUpperCase()) !==
+  //           -1
+  //       )
+  //     );
+  //     setMemberList(filteredList);
+  //     setSearched(true);
+  //     return;
+  //   }
+  //   setMemberList(pokemonData);
+  //   setSearched(false);
+  //   return;
+  // };
 
   const _search = (value: string) => {
     if (value !== "") {
