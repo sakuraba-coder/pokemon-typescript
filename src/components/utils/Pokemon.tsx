@@ -1,6 +1,4 @@
-import { memo, useCallback } from "react";
-
-export const getAllPokemon = (url: string): Promise<any> => {
+export const getPokemons = (url: string): Promise<any> => {
   // Promise:全て解決するまで待ってね
   return new Promise((resolve, reject) => {
     // データ取得
@@ -22,6 +20,9 @@ export const getPokemon = (url: string) => {
       .then((res) => res.json())
       .then((data) => {
         resolve(data);
+      })
+      .catch((data) => {
+        reject(data);
       });
   });
 };

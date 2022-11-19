@@ -1,28 +1,11 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-
-import {
-  Box,
-  Image,
-  Stack,
-  Text,
-  extendTheme,
-  keyframes,
-} from "@chakra-ui/react";
-import { memo, useCallback, FC } from "react";
+import { Box, Image, Stack, Text, keyframes } from "@chakra-ui/react";
+import { memo, FC } from "react";
 
 type Props = {
   id: number;
   pokemon: any;
   onClick: (id: number) => void;
 };
-
-const theme = extendTheme({
-  fonts: {
-    // heading: `'Open Sans', sans-serif`,
-    body: `'Raleway', sans-serif`,
-    // body: `'Body Font Name', sans-serif`,
-  },
-});
 
 const bigger = (scale: number) => keyframes`
   /* from {transform: scale(1.0, 1.0);} */

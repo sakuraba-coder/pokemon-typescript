@@ -10,7 +10,7 @@ type Props = {
 export const Layout: FC<Props> = (props) => {
   const { children } = props;
   return (
-    <Box>
+    <Box textAlign="center" minWidth="100px">
       <Header />
       {children}
       <Footer />

@@ -26,7 +26,7 @@ export const Footer: FC<Props> = memo(() => {
           <FooterIcon type="FaTwitter" url="https://twitter.com/VBA02702548" />
           <FooterIcon type="SiZenn" url="https://zenn.dev/dollaga_saiore" />
         </Flex>
-        &copy; 2022 by kaihatsu test.
+        &copy; 2022 by Sakuraba Coder.
       </Box>
     </>
   );
