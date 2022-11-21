@@ -36,7 +36,7 @@ export const Main: FC = memo(() => {
       const response = await fetch(url);
 
       if (response.ok) {
-        promises.push(await response.json());
+        promises.push(response.json());
       } else {
         break;
       }
