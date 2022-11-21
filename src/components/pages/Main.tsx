@@ -29,14 +29,20 @@ export const Main: FC = memo(() => {
   const setPokemonAllData = useCallback(async (URL: string) => {
     //全ポケモン取得
     const promises = [];
-    for (let i = 1; i < 825; i++) {
+
+    let i = 1;
+    while (true) {
       const url = `${URL}/${i}`;
-      promises.push(
-        fetch(url)
-          .then((res) => res.json())
-          .catch()
-      );
+      const response = await fetch(url);
+
+      if (response.ok) {
+        promises.push(await response.json());
+      } else {
+        break;
+      }
+      i++;
     }
+
     //全ポケモンをGlobalStateに1つずつ登録
     await Promise.all(promises)
       .then((results) => {
