@@ -26,3 +26,21 @@ export const getPokemon = (url: string) => {
       });
   });
 };
+
+export const getAllPokemon = async (URL: string) => {
+  //全ポケモン取得
+  const promises = [];
+  let i = 1;
+  while (true) {
+    const url = `${URL}/${i}`;
+    const response = await fetch(url);
+    if (response.ok) {
+      promises.push(response.json());
+    } else {
+      break;
+    }
+    i++;
+  }
+
+  return await Promise.all(promises);
+};

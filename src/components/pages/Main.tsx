@@ -4,7 +4,7 @@ import { useSelectedPokemon } from "../../hooks/useSelectedPokemon";
 import { Store } from "../../store/store";
 import { Pagination } from "../atoms/pagenation/Pagination";
 import { SearchForm } from "../atoms/search/SearchForm";
-import { getPokemons, getPokemon } from "../utils/Pokemon";
+import { getPokemons, getPokemon, getAllPokemon } from "../utils/Pokemon";
 import { PokemonDetailModal } from "../organisms/modal/PokemonDetailModal";
 import { CardsArea } from "../organisms/center/CardsArea";
 
@@ -28,36 +28,40 @@ export const Main: FC = memo(() => {
 
   const setPokemonAllData = useCallback(async (URL: string) => {
     //全ポケモン取得
-    const promises = [];
-
-    let i = 1;
-    while (true) {
-      const url = `${URL}/${i}`;
-      const response = await fetch(url);
-
-      if (response.ok) {
-        promises.push(response.json());
-      } else {
-        break;
-      }
-      i++;
-    }
+    // const promises = [];
+    // let i = 1;
+    // while (true) {
+    //   const url = `${URL}/${i}`;
+    //   const response = await fetch(url);
+    //   if (response.ok) {
+    //     promises.push(response.json());
+    //   } else {
+    //     break;
+    //   }
+    //   i++;
+    // }
 
     //全ポケモンをGlobalStateに1つずつ登録
-    await Promise.all(promises)
-      .then((results) => {
-        setGlobalState({ type: "SET_All", payload: { all: results } });
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    // await Promise.all(promises).then((results) => {
+    //   setGlobalState({ type: "SET_All", payload: { all: results } });
+    //   setLoading(false);
+    // });
+
+    // const res: any = await Promise.all(promises);
+    const res: any = await getAllPokemon(URL);
+
+    // .then((results) => {
+    //   return results;
+    // });
+
+    setGlobalState({ type: "SET_All", payload: { all: res } });
+    setLoading(false);
   }, []);
 
   const loadPokemon = useCallback(async (data: any) => {
     let _pokemonData = await Promise.all(
       data.map((pokemon: any) => {
-        let pokemonRecord = getPokemon(pokemon.url);
+        let pokemonRecord = getPokemons(pokemon.url);
         return pokemonRecord;
       })
     );
