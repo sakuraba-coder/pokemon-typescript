@@ -14,19 +14,6 @@ export const getPokemons = (url: string): Promise<any> => {
   });
 };
 
-export const getPokemon = (url: string) => {
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((data) => {
-        reject(data);
-      });
-  });
-};
-
 export const getAllPokemon = async (URL: string) => {
   //全ポケモン取得
   const promises = [];
@@ -43,4 +30,14 @@ export const getAllPokemon = async (URL: string) => {
   }
 
   return await Promise.all(promises);
+};
+
+export const loadPokemon = async (data: any) => {
+  let _pokemonData = await Promise.all(
+    data.map((pokemon: any) => {
+      let pokemonRecord = getPokemons(pokemon.url);
+      return pokemonRecord;
+    })
+  );
+  return _pokemonData;
 };

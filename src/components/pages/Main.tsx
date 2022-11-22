@@ -1,10 +1,10 @@
-import { useDisclosure, Spinner } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { FC, memo, useCallback, useEffect, useState, useContext } from "react";
 import { useSelectedPokemon } from "../../hooks/useSelectedPokemon";
 import { Store } from "../../store/store";
 import { Pagination } from "../atoms/pagenation/Pagination";
 import { SearchForm } from "../atoms/search/SearchForm";
-import { getPokemons, getPokemon, getAllPokemon } from "../utils/Pokemon";
+import { getPokemons, getAllPokemon, loadPokemon } from "../utils/Pokemon";
 import { PokemonDetailModal } from "../organisms/modal/PokemonDetailModal";
 import { CardsArea } from "../organisms/center/CardsArea";
 
@@ -23,55 +23,21 @@ export const Main: FC = memo(() => {
     //すべてのポケモンデータの総数を格納
     setPokemonCount(res.count);
     //各ポケモンの詳細データを取得
-    loadPokemon(res.results);
+    const data = await loadPokemon(res.results);
+    setPokemonData(data);
   };
 
-  const setPokemonAllData = useCallback(async (URL: string) => {
+  const fetchPokemonAllData = useCallback(async (URL: string) => {
+    setLoading(true);
     //全ポケモン取得
-    // const promises = [];
-    // let i = 1;
-    // while (true) {
-    //   const url = `${URL}/${i}`;
-    //   const response = await fetch(url);
-    //   if (response.ok) {
-    //     promises.push(response.json());
-    //   } else {
-    //     break;
-    //   }
-    //   i++;
-    // }
-
-    //全ポケモンをGlobalStateに1つずつ登録
-    // await Promise.all(promises).then((results) => {
-    //   setGlobalState({ type: "SET_All", payload: { all: results } });
-    //   setLoading(false);
-    // });
-
-    // const res: any = await Promise.all(promises);
     const res: any = await getAllPokemon(URL);
-
-    // .then((results) => {
-    //   return results;
-    // });
-
     setGlobalState({ type: "SET_All", payload: { all: res } });
     setLoading(false);
   }, []);
 
-  const loadPokemon = useCallback(async (data: any) => {
-    let _pokemonData = await Promise.all(
-      data.map((pokemon: any) => {
-        let pokemonRecord = getPokemons(pokemon.url);
-        return pokemonRecord;
-      })
-    );
-    setPokemonData(_pokemonData);
-  }, []);
-
   useEffect(() => {
-    setLoading(true);
     fetchPokemonData(initialURL);
-    setPokemonAllData(initialURL);
+    fetchPokemonAllData(initialURL);
   }, []);
 
   const onClickCard = useCallback(
@@ -91,18 +57,11 @@ export const Main: FC = memo(() => {
         fetchPokemonData={fetchPokemonData}
       />
       {/* ポケモン表示エリア */}
-
-      {loading ? (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      ) : (
-        <CardsArea pokemonData={pokemonData} onClickCard={onClickCard} />
-      )}
+      <CardsArea
+        pokemonData={pokemonData}
+        onClickCard={onClickCard}
+        loading={loading}
+      />
       {/* ページネーション */}
       <Pagination
         pokemonCount={pokemonCount}

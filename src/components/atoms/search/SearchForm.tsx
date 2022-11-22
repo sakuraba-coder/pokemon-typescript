@@ -19,7 +19,6 @@ export const SearchForm: FC<Props> = (props: Props) => {
   const { globalState, setGlobalState } = useContext(Store);
 
   const _search = (value: string) => {
-    console.log("globalState", globalState);
     if (value !== "") {
       const filteredList = globalState.all.filter(
         (pokemon: any) =>
